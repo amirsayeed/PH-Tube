@@ -31,11 +31,11 @@
                             <path d="m21 21-4.3-4.3"></path>
                         </g>
                     </svg>
-                    <input type="search" required placeholder="Search" />
+                    <input id="input" type="search" required placeholder="Search" />
                 </label>
             </div>
             <div>
-                <button class="btn bg-[#FF1F3D] text-white rounded-lg">Blog</button>
+                <button class="btn bg-[#FF1F3D] text-white rounded-lg">Sort by view</button>
             </div>
         </nav>
     </header>
@@ -43,6 +43,9 @@
         <div id="category-container" class="flex justify-center gap-5 mt-10">
             <button id="all-btn" onclick="loadVideos()" class="btn btn-sm">All</button>
         </div>
+        <section id="loader" class="text-center py-10 hidden">
+            <span class="loading loading-dots loading-lg"></span>
+        </section>
         <section id="video-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
 
         </section>

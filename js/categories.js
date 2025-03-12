@@ -4,8 +4,18 @@ const loadCategories = () => {
         .then(data => displayCategories(data.categories))
 }
 
-const loadVideos = () => {
-    fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+const showLoader = () => {
+    document.getElementById("loader").classList.remove("hidden");
+    document.getElementById("video-container").classList.add("hidden");
+}
+
+const hideLoader = () => {
+    document.getElementById("video-container").classList.remove("hidden");
+    document.getElementById("loader").classList.add("hidden");
+}
+const loadVideos = (searchText = "") => {
+    showLoader();
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
         .then(res => res.json())
         .then(data => {
             document.getElementById("all-btn").classList.add("active");
@@ -14,6 +24,7 @@ const loadVideos = () => {
 }
 
 const loadByCategory = (id) => {
+    showLoader()
     const url = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`
 
     fetch(url).then(res => res.json())
@@ -78,6 +89,7 @@ const displayVideos = (videos) => {
         alt = "">
             <h2 class = "text-xl font-bold" > Oops!!Sorry, There is no content here </h2> </div>
         `
+        hideLoader()
         return;
     }
 
@@ -116,7 +128,7 @@ const displayVideos = (videos) => {
         videoContainer.appendChild(div);
 
     });
-
+    hideLoader()
 }
 
 const removeActiveClass = () => {
@@ -125,4 +137,11 @@ const removeActiveClass = () => {
         btn.classList.remove("active")
     }
 }
+
+document.getElementById("input").addEventListener('keyup', (e) => {
+    const input = e.target.value;
+    //console.log(input);
+    loadVideos(input);
+})
+
 loadCategories()
