@@ -1,42 +1,55 @@
-const loadCategories = () =>{
+const loadCategories = () => {
     fetch("https://openapi.programming-hero.com/api/phero-tube/categories")
-    .then(res => res.json())
-    .then(data => displayCategories(data.categories))
+        .then(res => res.json())
+        .then(data => displayCategories(data.categories))
 }
 
-const loadVideos = () =>{
+const loadVideos = () => {
     fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
-    .then(res => res.json())
-    .then(data =>displayVideos(data.videos))
+        .then(res => res.json())
+        .then(data => displayVideos(data.videos))
 }
 
+const loadByCategory = (id) => {
+    const url = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`
 
-const displayCategories = (categories) =>{
+    fetch(url).then(res => res.json())
+        .then(data => displayVideos(data.category))
+}
+
+const displayCategories = (categories) => {
     const categoryContainer = document.getElementById("category-container")
-    categories.forEach((item)=>{
-        const btn = document.createElement("button");
-        btn.classList.add('btn')
-        btn.innerText = item.category;
-        categoryContainer.append(btn);
+    categories.forEach((item) => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+        <button onclick = "loadByCategory(${item.category_id})"
+        class = "btn btn-sm hover:bg-[#FF1F3D] hover:text-white"> ${
+            item.category
+        } </button>
+        `
+        categoryContainer.append(div);
     })
 }
 
-const displayVideos = (videos) =>{
+const displayVideos = (videos) => {
+    console.log(videos)
     const videoContainer = document.getElementById("video-container");
-        
+    videoContainer.innerHTML = '';
+
     videos.forEach(video => {
         const div = document.createElement('div');
         div.innerHTML = `
         <div class="card bg-base-100">
-        <figure>
+        <figure class="relative">
             <img class="w-full h-[200px] object-cover"
             src="${video.thumbnail}"
             alt="Shoes" />
+            <span class="absolute bottom-2 right-2 text-sm text-white bg-black rounded px-2">3hrs 56 min ago</span>
         </figure>
         <div class="flex gap-3 px-0 py-5">
             <div class="profile">
                 <div class="avatar">
-                <div class="w-10 rounded-full">
+                <div class = "ring-primary ring-offset-base-100 ring ring-offset-2 w-6 rounded-full">
                     <img
                     src="${video.authors[0].profile_picture}"
                     />
@@ -55,9 +68,10 @@ const displayVideos = (videos) =>{
         </div>
         `
         videoContainer.appendChild(div);
-   
+
     });
-    
+
 }
+
+
 loadCategories()
-loadVideos()
